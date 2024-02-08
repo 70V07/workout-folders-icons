@@ -22,7 +22,7 @@ IconResource=C:\WINDOWS\System32\SHELL32.dll,316
 # ...
 
 # Function to modify desktop.ini
-function Modify-DesktopINI {
+function Set-DesktopINI {
     param (
         [string]$TargetDirectory,
         [string]$INIContent
