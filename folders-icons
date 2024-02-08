@@ -1,0 +1,57 @@
+# Definition of folder paths and desktop.ini contents
+$FolderPath_1 = "C:\Users\%USERPROFILE%\test1"
+$FolderPath_2 = "C:\Users\%USERPROFILE%\test2"
+$FolderPath_3 = "C:\Users\%USERPROFILE%\test3"
+# ...
+
+# Definition of changes in desktop.ini for each folder
+$INI_1 = @"
+[.ShellClassInfo]
+IconResource=C:\WINDOWS\System32\SHELL32.dll,314
+"@
+
+$INI_2 = @"
+[.ShellClassInfo]
+IconResource=C:\WINDOWS\System32\SHELL32.dll,315
+"@
+
+$INI_3 = @"
+[.ShellClassInfo]
+IconResource=C:\WINDOWS\System32\SHELL32.dll,316
+"@
+# ...
+
+# Function to modify desktop.ini
+function Modify-DesktopINI {
+    param (
+        [string]$TargetDirectory,
+        [string]$INIContent
+    )
+
+    # Check if desktop.ini file already exists
+    if (Test-Path "$TargetDirectory\desktop.ini") {
+        # Read the content of the existing desktop.ini file
+        $existingContent = Get-Content "$TargetDirectory\desktop.ini" -Raw
+        
+        # Check if existing content is different from new content
+        if ($existingContent -ne $INIContent) {
+            # If existing content is different from new content, replace the content
+            Set-Content "$TargetDirectory\desktop.ini" -Value $INIContent
+        }
+    } else {
+        # If desktop.ini file doesn't exist, create the content
+        Add-Content "$TargetDirectory\desktop.ini" -Value $INIContent
+        
+        # Set attributes for $DesktopIni
+        (Get-Item "$TargetDirectory\desktop.ini" -Force).Attributes = 'Hidden, System, Archive'
+
+        # Finally, set folder attributes
+        (Get-Item $TargetDirectory -Force).Attributes = 'ReadOnly, Directory'
+    }
+}
+
+# Modify desktop.ini for each folder
+Modify-DesktopINI -TargetDirectory $FolderPath_1 -INIContent $INI_1
+Modify-DesktopINI -TargetDirectory $FolderPath_2 -INIContent $INI_2
+Modify-DesktopINI -TargetDirectory $FolderPath_3 -INIContent $INI_3
+# ...
