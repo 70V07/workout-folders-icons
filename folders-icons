@@ -51,7 +51,7 @@ function Set-DesktopINI {
 }
 
 # Modify desktop.ini for each folder
-Modify-DesktopINI -TargetDirectory $FolderPath_1 -INIContent $INI_1
-Modify-DesktopINI -TargetDirectory $FolderPath_2 -INIContent $INI_2
-Modify-DesktopINI -TargetDirectory $FolderPath_3 -INIContent $INI_3
+Set-DesktopINI -TargetDirectory $FolderPath_1 -INIContent $INI_1
+Set-DesktopINI -TargetDirectory $FolderPath_2 -INIContent $INI_2
+Set-DesktopINI -TargetDirectory $FolderPath_3 -INIContent $INI_3
 # ...
